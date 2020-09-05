@@ -1,8 +1,4 @@
 // REQUIRE INSTALLED APPS
-require('dotenv').config({ path: './.env' });
-
-// process.env
-const mdb_var = process.env.MDB_VAR;
 
 const
     Campground = require("./models/campground"),
@@ -25,7 +21,9 @@ const campgroundRoutes = require("./routes/campgrounds");
 const indexRoutes = require("./routes/index");
 
 // APP CONFIG
-mongoose.connect(mdb_var, {
+
+const databaseUrl = process.env.DATABASEURL;
+mongoose.connect(databaseUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => {
