@@ -1,5 +1,4 @@
 // REQUIRE INSTALLED APPS
-
 const
     Campground = require("./models/campground"),
     methodOverride = require("method-override"),
@@ -21,9 +20,9 @@ const campgroundRoutes = require("./routes/campgrounds");
 const indexRoutes = require("./routes/index");
 
 // APP CONFIG
-
-const databaseUrl = process.env.DATABASEURL;
-mongoose.connect(databaseUrl, {
+// DATABASEURL key value pair keeps local database and cloud database seperate
+const url = process.env.DATABASEURL || "mongodb://localhost:27017/yelp_camp_v13";
+mongoose.connect(url, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => {
