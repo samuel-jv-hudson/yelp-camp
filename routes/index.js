@@ -45,12 +45,15 @@ router.get("/login", function (req, res) {
 
 // HANDLING LOGIN LOGIC
 // Middleware
-router.post("/login", passport.authenticate("local",
-    {
-        successRedirect: "/campgrounds",
-        failureRedirect: "/login"
-    }), function (req, res) {
-    });
+router.post("/login", function (req, res, next) {
+    passport.authenticate("local",
+        {
+            successRedirect: "/campgrounds",
+            failureRedirect: "/login",
+            failureFlash: true,
+            successFlash: "Welcome to YelpCamp, " + req.body.username + "!"
+        })(req, res);
+});
 
 // LOGOUT ROUTE
 router.get("/logout", function (req, res) {

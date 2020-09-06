@@ -1,5 +1,5 @@
 // Configure dotenv
-require('dotenv').config()
+require('dotenv').config({ path: './.env' });
 
 // REQUIRE INSTALLED APPS
 const
