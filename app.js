@@ -1,3 +1,6 @@
+// Configure dotenv
+require('dotenv').config()
+
 // REQUIRE INSTALLED APPS
 const
     Campground = require("./models/campground"),
