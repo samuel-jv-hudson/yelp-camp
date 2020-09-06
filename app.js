@@ -38,6 +38,8 @@ app.use(methodOverride("_method"));
 app.use(flash());
 // SEED THE DATABASE // seedDB();
 
+// requiring moments.js to app
+app.locals.moment = require('moment');
 
 // PASSPORT CONFIGURATION
 app.use(require("express-session")({
