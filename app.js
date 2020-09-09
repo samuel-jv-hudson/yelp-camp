@@ -26,6 +26,7 @@ const indexRoutes = require("./routes/index");
 // DATABASEURL key value pair keeps local database and cloud database seperate
 const url = process.env.DATABASEURL || "mongodb://localhost:27017/yelp_camp_v14";
 mongoose.connect(url, {
+    useCreateIndex: true,
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => {
