@@ -20,8 +20,8 @@ const geocoder = NodeGeocoder(options);
 
 // INDEX - show all campgrounds
 router.get("/", function (req, res) {
+    var noMatch = null;
     if (req.query.search) {
-        var noMatch = null;
         const regex = new RegExp(escapeRegex(req.query.search), "gi");
         // Get all campgrounds from DB
         Campground.find({ $or: [{ name: regex, }, { location: regex }, { "author.username": regex }] }, function (err, allCampgrounds) {
