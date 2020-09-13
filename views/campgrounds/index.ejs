@@ -14,7 +14,20 @@
     <div class="col-lg-12">
         <h3>Our Most Popular Campgrounds!</h3>
     </div>
-    <div>
+    <div class="col-md-12">
+        <% if(noMatch !== null) { %>
+        <h3><%= noMatch %> </h3>
+        <p>
+        <form action="/campgrounds" method="GET" class="form-inline">
+            <div class="form-group">
+                <input type="text" name="search" placeholder="Campground search..." class="form-control">
+                <input type="submit" value="search" class="btn btn-default">
+            </div>
+        </form>
+        </p>
+        <% }; %>
+        <div>
+        </div>
         <% campgrounds.forEach(function(campground){ %>
         <div class="col-md-3 col-sm-6">
             <div class="thumbnail">
