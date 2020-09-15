@@ -130,8 +130,12 @@ router.post('/forgot', function (req, res, next) {
             });
         }
     ], function (err) {
-        if (err) return next(err);
-        res.redirect('/forgot');
+        if (err) {
+            console.log(err);
+            return next(err)
+        } else {
+            res.redirect('/forgot');
+        }
     });
 });
 
@@ -140,7 +144,6 @@ router.get('/reset/:token', function (req, res) {
     User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function (err, user) {
         if (!user) {
             req.flash('error', 'Password reset token is invalid or has expired.');
-            console.log("THIS IS THE ERROR: ", err);
             return res.redirect('/forgot');
         }
         res.render('reset', { token: req.params.token });
@@ -193,8 +196,12 @@ router.post('/reset/:token', function (req, res) {
             });
         }
     ], function (err) {
-        if (err) return next(err);
-        res.redirect('/campgrounds');
+        if (err) {
+            console.log(err);
+            return next(err)
+        } else {
+            res.redirect('/forgot');
+        }
     });
 });
 
