@@ -183,13 +183,15 @@ router.post('/reset/:token', function (req, res) {
                     console.log(err);
                 } else {
                     console.log(body);
-                    console.log('mail sent');
-                    req.flash('success', "Success! Your password has been changed.");
-                    res.redirect('/campgrounds');
+                    console.log('success mail sent');
+                    req.flash('success', 'Success! Your password has been changed.');
+                    done(err);
                 }
             });
         }
-    ]);
+    ], function (err) {
+        res.redirect('/campgrounds');
+    });
 });
 
 // USER PROFILES ROUTE
