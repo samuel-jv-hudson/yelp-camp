@@ -110,13 +110,6 @@ router.post('/forgot', function (req, res, next) {
             });
         },
         function (token, user, done) {
-            var smtpTransport = nodemailer.createTransport({
-                service: 'Mailgun',
-                auth: {
-                    user: process.env.MAILGUN_USER,
-                    pass: process.env.MAILGUNPW
-                }
-            });
             var mailOptions = {
                 to: user.email,
                 from: process.env.WORK_USER,
@@ -129,19 +122,15 @@ router.post('/forgot', function (req, res, next) {
             mailgun.messages().send(mailOptions, function (err, body) {
                 if (err) {
                     console.log(err);
+                } else {
+                    console.log(body);
+                    console.log('mail sent');
+                    req.flash('success', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
+                    res.redirect('/forgot');
                 }
-                console.log(body);
             });
-            smtpTransport.sendMail(mailOptions, function (err) {
-                console.log('mail sent');
-                req.flash('success', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
-                done(err, 'done')
-            })
         }
-    ], function (err) {
-        if (err) return next(err);
-        res.redirect('/forgot');
-    });
+    ]);
 });
 
 // RESET PAGE TOKEN ROUTE
@@ -182,13 +171,6 @@ router.post('/reset/:token', function (req, res) {
             });
         },
         function (user, done) {
-            var smtpTransport = nodemailer.createTransport({
-                service: 'Mailgun',
-                auth: {
-                    user: process.env.MAILGUN_USER,
-                    pass: process.env.MAILGUNPW
-                }
-            });
             var mailOptions = {
                 to: user.email,
                 from: process.env.WORK_USER,
@@ -196,14 +178,18 @@ router.post('/reset/:token', function (req, res) {
                 text: 'Hello,\n\n' +
                     'This is a confirmation that the password for your YelpCamp account ' + user.email + ' has just been changed.\n'
             };
-            smtpTransport.sendMail(mailOptions, function (err) {
-                req.flash('success', 'Success! Your password has been changed.');
-                done(err);
+            mailgun.messages().send(mailOptions, function (err, body) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log(body);
+                    console.log('mail sent');
+                    req.flash('success', "Success! Your password has been changed.");
+                    res.redirect('/campgrounds');
+                }
             });
         }
-    ], function (err) {
-        res.redirect('/campgrounds');
-    });
+    ]);
 });
 
 // USER PROFILES ROUTE
