@@ -5,7 +5,6 @@ const
     express = require("express"),
     router = express.Router(),
     async = require("async"),
-    nodemailer = require("nodemailer"),
     crypto = require("crypto"),
     api_key = process.env.MAILGUN_API,
     domain = process.env.MAILGUN_DOMAIN,
@@ -126,11 +125,14 @@ router.post('/forgot', function (req, res, next) {
                     console.log(body);
                     console.log('mail sent');
                     req.flash('success', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
-                    res.redirect('/forgot');
+                    done(err, 'done');
                 }
             });
         }
-    ]);
+    ], function (err) {
+        if (err) return next(err);
+        res.redirect('/forgot');
+    });
 });
 
 // RESET PAGE TOKEN ROUTE
@@ -185,11 +187,12 @@ router.post('/reset/:token', function (req, res) {
                     console.log(body);
                     console.log('success mail sent');
                     req.flash('success', 'Success! Your password has been changed.');
-                    done(err);
+                    done(err, 'done');
                 }
             });
         }
     ], function (err) {
+        if (err) return next(err);
         res.redirect('/campgrounds');
     });
 });
