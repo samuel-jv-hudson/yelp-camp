@@ -96,6 +96,7 @@ router.post('/forgot', function (req, res, next) {
         function (token, done) {
             User.findOne({ email: req.body.email }, function (err, user) {
                 if (!user) {
+                    console.log(err);
                     req.flash('error', 'No account with that email address exists.');
                     return res.redirect('/forgot');
                 }
@@ -144,7 +145,7 @@ router.post('/forgot', function (req, res, next) {
 router.get('/reset/:token', function (req, res) {
     User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function (err, user) {
         if (!user) {
-            console.log("The is reset token error 1", err);
+            console.log("This is reset token error 1", err);
             console.log(user);
             req.flash('error', 'Password reset token is invalid or has expired.');
             return res.redirect('/forgot');
@@ -159,13 +160,14 @@ router.post('/reset/:token', function (req, res) {
         function (done) {
             User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function (err, user) {
                 if (!user) {
-                    console.log("The is reset token error logic 2", err)
+                    console.log("This is reset token error 2", err)
                     console.log(user);
                     req.flash('error', 'Password reset token is invalid or has expired.');
                     return res.redirect('back');
                 }
                 if (req.body.password === req.body.confirm) {
                     user.setPassword(req.body.password, function (err) {
+                        console.log("This is password reset input logic error", err);
                         user.resetPasswordToken = undefined;
                         user.resetPasswordExpires = undefined;
 
@@ -176,6 +178,7 @@ router.post('/reset/:token', function (req, res) {
                         });
                     })
                 } else {
+                    console.log("Failed to save password error", err);
                     req.flash("error", "Passwords do not match.");
                     return res.redirect('back');
                 }
