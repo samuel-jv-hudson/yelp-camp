@@ -112,7 +112,7 @@ router.post('/forgot', function (req, res, next) {
             var mailOptions = {
                 to: user.email,
                 from: process.env.WORK_USER,
-                subject: 'YelCamp Password Reset',
+                subject: 'YelpCamp Password Reset',
                 text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
                     'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
                     'http://' + req.headers.host + '/reset/' + token + '\n\n' +
@@ -143,6 +143,7 @@ router.post('/forgot', function (req, res, next) {
 router.get('/reset/:token', function (req, res) {
     User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function (err, user) {
         if (!user) {
+            console.log("The is reset token error 1", err);
             req.flash('error', 'Password reset token is invalid or has expired.');
             return res.redirect('/forgot');
         }
@@ -156,6 +157,7 @@ router.post('/reset/:token', function (req, res) {
         function (done) {
             User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function (err, user) {
                 if (!user) {
+                    console.log("The is reset token error logic 2", err)
                     req.flash('error', 'Password reset token is invalid or has expired.');
                     return res.redirect('back');
                 }
@@ -200,7 +202,7 @@ router.post('/reset/:token', function (req, res) {
             console.log(err);
             return next(err)
         } else {
-            res.redirect('/forgot');
+            res.redirect('/campgrounds');
         }
     });
 });
