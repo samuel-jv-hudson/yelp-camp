@@ -46,7 +46,7 @@ router.post("/register", function (req, res) {
     User.register(newUser, req.body.password, function (err, user) {
         if (err) {
             console.log(err);
-            return res.render("register", { "error": err.message });
+            return res.render("register", { "error": "That email is already in use by another user, please use a different email." });
         };
         passport.authenticate("local")(req, res, function () {
             req.flash("success", "Welcome to YelpCamp " + user.username + "!");
